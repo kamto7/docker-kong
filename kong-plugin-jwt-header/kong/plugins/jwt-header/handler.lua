@@ -16,12 +16,11 @@ function JwtHeaderHandler:access(config)
     
     if (jwt_obj['payload']) then
       local payload = jwt_obj['payload']
-      table.remove(payload, 'iss')
-      table.remove(payload, 'iat')
-      table.remove(payload, 'exp')
       for key, value in pairs(payload) do
-        local name = 'x-'..string.gsub(key, "_", "-")
-        ngx.req.set_header(name, value)
+        if (key != 'iss' || key != 'iat' || key != 'exp') do
+          local name = 'x-'..string.gsub(key, "_", "-")
+          ngx.req.set_header(name, value)
+        end
       end
     end
   end
