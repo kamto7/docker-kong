@@ -17,7 +17,7 @@ function JwtHeaderHandler:access(config)
     if (jwt_obj['payload']) then
       local payload = jwt_obj['payload']
       for key, value in pairs(payload) do
-        if (key ~= 'iss' and key ~= 'iat' and key ~= 'exp') do
+        if (key ~= 'iss' and key ~= 'iat' and key ~= 'exp') then
           local name = 'x-'..string.gsub(key, "_", "-")
           ngx.req.set_header(name, value)
         end
