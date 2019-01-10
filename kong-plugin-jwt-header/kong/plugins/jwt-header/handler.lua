@@ -2,6 +2,18 @@ local BasePlugin = require "kong.plugins.base_plugin"
 local jwt = require "resty.jwt"
 local JwtHeaderHandler = BasePlugin:extend()
 
+function string.split( str, reps )
+  local resultStrList = {}
+  string.gsub(str,'[^'..reps..']+',function ( w )
+      table.insert(resultStrList,w)
+  end)
+  return resultStrList
+end
+
+function string.ucfirst(str)
+  return (str:gsub("^%l", string.upper))
+end
+
 function JwtHeaderHandler:new()
   JwtHeaderHandler.super.new(self, "jwt-header")
 end
@@ -18,7 +30,11 @@ function JwtHeaderHandler:access(config)
       local payload = jwt_obj['payload']
       for key, value in pairs(payload) do
         if (key ~= 'iss' and key ~= 'iat' and key ~= 'exp') then
-          local name = 'x-'..string.gsub(key, "_", "-")
+          nameList = string.split(key, "_") 
+          local name = 'X'
+          for _, n in pairs(nameList) do
+            name = name..'-'..string.ucfirst(n)
+          end
           ngx.req.set_header(name, value)
         end
       end
