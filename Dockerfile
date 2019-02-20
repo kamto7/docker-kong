@@ -1,4 +1,4 @@
-FROM kong:1.0.0-alpine
+FROM kong
 
 RUN mkdir /app
 
