@@ -2,6 +2,8 @@ local BasePlugin = require "kong.plugins.base_plugin"
 local jwt = require "resty.jwt"
 local JwtHeaderHandler = BasePlugin:extend()
 
+JwtHeaderHandler.PRIORITY = 900
+
 function string.split( str, reps )
   local resultStrList = {}
   string.gsub(str,'[^'..reps..']+',function ( w )
