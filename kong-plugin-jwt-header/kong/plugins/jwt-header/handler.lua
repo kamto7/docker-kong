@@ -2,7 +2,7 @@ local BasePlugin = require "kong.plugins.base_plugin"
 local jwt = require "resty.jwt"
 local JwtHeaderHandler = BasePlugin:extend()
 
-JwtHeaderHandler.PRIORITY = 900
+JwtHeaderHandler.PRIORITY = 1100
 
 function string.split( str, reps )
   local resultStrList = {}
