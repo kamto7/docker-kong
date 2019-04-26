@@ -29,11 +29,20 @@ function JwtHeaderHandler:access(config)
     local jwt_obj = jwt:load_jwt(jwt_token)
     
     if (jwt_obj['payload']) then
+      -- remove client custom jwt headers
+      for key, value in pairs(headers) do
+        local n, _ = string.find("Jwt")
+        if n == 1 then
+          ngx.req.clear_header(key)
+        end
+      end
+
+      -- add jwt headers
       local payload = jwt_obj['payload']
       for key, value in pairs(payload) do
         if (key ~= 'iss' and key ~= 'iat' and key ~= 'exp') then
           nameList = string.split(key, "_") 
-          local name = 'X'
+          local name = 'Jwt'
           for _, n in pairs(nameList) do
             name = name..'-'..string.ucfirst(n)
           end
