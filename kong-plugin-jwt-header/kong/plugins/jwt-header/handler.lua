@@ -31,7 +31,7 @@ function JwtHeaderHandler:access(config)
     if (jwt_obj['payload']) then
       -- remove client custom jwt headers
       for key, value in pairs(headers) do
-        local n, _ = string.find("Jwt")
+        local n, _ = string.find(key, "Jwt")
         if n == 1 then
           ngx.req.clear_header(key)
         end
